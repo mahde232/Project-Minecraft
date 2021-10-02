@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft - 2D</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <!-- <link rel="stylesheet" href="./css/mobile.css"> -->
+</head>
+<body>
+    <div id='mainMenu'>
+        <div id='mainMenuText'>
+            <div id='startBtn' class='menuBar'>Start Game</div>
+            <div id='worldSize' class='menuBar'>
+                World size
+                <div>
+                    Size: <input id='sizeInput' type="text" style="width: 20px;" maxlength="2">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id='gameContainer'>
+        <div id='leftMenu'>
+            <div id='leftFlex'>
+                <div class="invBlock dirt clickable">
+                    <div class='amountOfItem'><span id='dirtCnt'>00</span></div>
+                </div>
+                <div class="invBlock leaves clickable">
+                    <div class='amountOfItem'><span id='leavesCnt'>00</span></div>
+                </div>
+                <div class="invBlock cobblestone clickable">
+                    <div class='amountOfItem'><span id='cobblestoneCnt'>00</span></div>
+                </div>
+                <div class="invBlock lava clickable">
+                    <div class='amountOfItem'><span id='lavaCnt'>00</span></div>
+                </div>
+            </div>
+            <div id='rightFlex'>
+                <div class="invBlock grass clickable">
+                    <div class='amountOfItem'><span id='grassCnt'>00</span></div>
+                </div>
+                <div class="invBlock wood clickable">
+                    <div class='amountOfItem'><span id='woodCnt'>00</span></div>
+                </div>
+                <div class="invBlock water clickable">
+                    <div class='amountOfItem'><span id='waterCnt'>00</span></div>
+                </div>
+                <div id='resetBtn'></div>
+            </div>
+        </div>
+        <div id='rightMenu'>
+            <div class="invTool axe clickable"></div>
+            <div class="invTool pickaxe clickable"></div>
+            <div class="invTool shovel clickable"></div>
+            <div class="invTool hand clickable"></div>
+            <div class="invTool bucket clickable"></div>
+        </div>
+        <div id='gameWindow'>
+        </div>
+    </div>
+    <script src="./js/minecraft.js"></script>
+</body>
+</html>
