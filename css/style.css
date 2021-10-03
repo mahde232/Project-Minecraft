@@ -33,13 +33,10 @@ body {
 #worldSize {
     margin-top: 20px;
 }
-
-
 #gameContainer {
     display: flex;
     justify-content: space-between;
 }
-
 #leftMenu {
     background-color: var(--side-menu-background);
     height: 100vh;
@@ -47,7 +44,6 @@ body {
     display: flex;
     justify-content: space-evenly;
 }
-
 #leftFlex {
     height: 100%;
     width: 40%;
@@ -56,7 +52,6 @@ body {
     justify-content: space-evenly;
     align-items: center;
 }
-
 #rightFlex {
     height: 100%;
     width: 40%;
@@ -65,7 +60,6 @@ body {
     justify-content: space-evenly;
     align-items: center;
 }
-
 #gameWindow {
     background-color: var(--game-background);
     height: 100vh;
@@ -78,7 +72,6 @@ body {
 #gameWindow::-webkit-scrollbar {
     display: none;
 }
-
 #rightMenu {
     background-color: var(--side-menu-background);
     height: 100vh;
@@ -87,7 +80,6 @@ body {
     justify-content: space-evenly;
     align-items: center;
 }
-
 .invBlock {
     width: 10vmin;
     height: 10vmin;

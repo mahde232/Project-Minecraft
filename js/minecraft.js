@@ -1,11 +1,8 @@
 // global game variables
-let worldMatrix;
-let gameSizeX = 0, gameSizeY = 0;
-
-let invDirt = 0, invGrass = 0, invLeaves = 0, invWood = 0, invCobble = 0, invWater = 0, invLava = 0;
-let selectedTool = '';
-let selectedElement;
-let availableBlocks = ['dirt', 'cobblestone', 'lava', 'water', 'grass', 'leaves', 'wood', 'sky'];
+let worldMatrix, gameSizeX = 0, gameSizeY = 0; //gameWindow variables
+let invDirt = invGrass = invLeaves = invWood = invCobble = invWater = invLava = 0; //inventory variables
+let selectedTool = '', selectedElement; //tools interaction variables
+let availableBlocks = ['dirt', 'cobblestone', 'lava', 'water', 'grass', 'leaves', 'wood', 'sky']; //available blocks in game
 
 // global query grabs
 let gameWindow = document.querySelector('#gameWindow');
@@ -15,7 +12,9 @@ let sizeInput = document.querySelector('#sizeInput');
 let clickables = document.querySelectorAll('.clickable');
 let invTools = document.querySelectorAll('.invTool');
 let gameTiles = document.querySelectorAll('.gameTile');
+let resetBtn = document.querySelector('#resetBtn');
 
+//counters
 let grassCnt = document.querySelector('#grassCnt');
 let dirtCnt = document.querySelector('#dirtCnt');
 let woodCnt = document.querySelector('#woodCnt');
@@ -24,10 +23,7 @@ let waterCnt = document.querySelector('#waterCnt');
 let lavaCnt = document.querySelector('#lavaCnt');
 let cobblestoneCnt = document.querySelector('#cobblestoneCnt');
 
-let resetBtn = document.querySelector('#resetBtn');
-
 //functions
-
 function createWorld(x, y) {
     worldMatrix = Array.from(Array(parseInt(y)), () => new Array(parseInt(x)));
 
@@ -55,8 +51,6 @@ function createWorld(x, y) {
     for (let i = 12; i < 15; i++) { //add random water
         let end = Math.floor(Math.random() * (gameSizeX - 7));
         let start = 7 + Math.floor(Math.random() * end);
-        console.log('start', start);
-        console.log('end', end);
         for (let j = end; j > start; j--) {
             worldMatrix[i][j] = 'water';
         }
@@ -81,7 +75,6 @@ function createWorld(x, y) {
             generateCloud2(i, 1);
         }
     }
-    console.log(worldMatrix);
     drawWorld();
 }
 function generateTree(x, y) {
@@ -124,8 +117,6 @@ function generateCloud2(x, y) {
     worldMatrix[y + 2][x + 3] = 'cloud';
 }
 function drawWorld() {
-    // gameWindow.style.gridTemplateColumns = `repeat(${gameSizeX},5fr)`;
-    // gameWindow.style.gridTemplateRows = `repeat(20,1fr)`;
     for (let i = 0; i < gameSizeY; i++) {
         for (let j = 0; j < gameSizeX; j++) {
             let div = document.createElement('div');
@@ -172,132 +163,100 @@ function drawWorld() {
     }
 }
 function gameTileClicked() {
-    console.log(this.classList[1]);
+    //tool on block interactions
     if (selectedTool == 'bucket' && (this.classList[1] == 'water' || this.classList[1] == 'lava')) {
         if (this.classList[1] == 'water') {
             invWater++;
             waterCnt.textContent = invWater;
-            this.classList.remove('water')
-            this.classList.add('sky')
+            updateObjClasslist(this,'water','sky');
         }
         else {
             invLava++;
             lavaCnt.textContent = invLava;
-            this.classList.remove('lava')
-            this.classList.add('sky')
+            updateObjClasslist(this,'lava','sky');
         }
-        console.log('delete ', this.classList[1]);
     }
     if (selectedTool == 'pickaxe' && this.classList[1] == 'cobblestone') {
         invCobble++;
         cobblestoneCnt.textContent = invCobble;
-        this.classList.remove('cobblestone')
-        this.classList.add('sky')
-        console.log('delete ', this.classList[1]);
+        updateObjClasslist(this,'cobblestone','sky');
     }
     if (selectedTool == 'axe' && (this.classList[1] == 'wood' || this.classList[1] == 'leaves')) {
         if (this.classList[1] == 'wood') {
             invWood++;
             woodCnt.textContent = invWood;
-            this.classList.remove('wood')
-            this.classList.add('sky')
+            updateObjClasslist(this,'wood','sky');
         }
         else {
             invLeaves++;
             leavesCnt.textContent = invLeaves;
-            this.classList.remove('leaves')
-            this.classList.add('sky')
+            updateObjClasslist(this,'leaves','sky');
         }
-        console.log('delete ', this.classList[1]);
     }
     if (selectedTool == 'shovel' && (this.classList[1] == 'dirt' || this.classList[1] == 'grass')) {
         if (this.classList[1] == 'dirt') {
             invDirt++;
             dirtCnt.textContent = invDirt;
-            this.classList.remove('dirt')
-            this.classList.add('sky')
+            updateObjClasslist(this,'dirt','sky');
         }
         else {
             invGrass++;
             grassCnt.textContent = invGrass;
-            this.classList.remove('grass')
-            this.classList.add('sky')
+            updateObjClasslist(this,'grass','sky');
         }
-        console.log('delete ', this.classList[1]);
     }
+    //Block on sky interactions
     if(this.classList[1] == 'sky' && selectedElement.classList[1] == 'dirt' && invDirt >= 1)
     {
         invDirt--;
         dirtCnt.textContent = invDirt;
-        this.classList.remove('sky')
-        this.classList.add('dirt')
+        updateObjClasslist(this,'sky','dirt');
     }
     if(this.classList[1] == 'sky' && selectedElement.classList[1] == 'grass' && invGrass >= 1)
     {
         invGrass--;
         grassCnt.textContent = invGrass;
-        this.classList.remove('sky')
-        this.classList.add('grass')
+        updateObjClasslist(this,'sky','grass');
     }
     if(this.classList[1] == 'sky' && selectedElement.classList[1] == 'water' && invWater >= 1)
     {
         invWater--;
         waterCnt.textContent = invWater;
-        this.classList.remove('sky')
-        this.classList.add('water')
+        updateObjClasslist(this,'sky','water');
     }
     if(this.classList[1] == 'sky' && selectedElement.classList[1] == 'lava' && invLava >= 1)
     {
         invLava--;
         lavaCnt.textContent = invLava;
-        this.classList.remove('sky')
-        this.classList.add('lava')
+        updateObjClasslist(this,'sky','lava');
     }
     if(this.classList[1] == 'sky' && selectedElement.classList[1] == 'wood' && invWood >= 1)
     {
         invWood--;
         woodCnt.textContent = invWood;
-        this.classList.remove('sky')
-        this.classList.add('wood')
+        updateObjClasslist(this,'sky','wood');
     }
     if(this.classList[1] == 'sky' && selectedElement.classList[1] == 'leaves' && invLeaves >= 1)
     {
         invLeaves--;
         leavesCnt.textContent = invLeaves;
-        this.classList.remove('sky')
-        this.classList.add('leaves')
+        updateObjClasslist(this,'sky','leaves');
     }
     if(this.classList[1] == 'sky' && selectedElement.classList[1] == 'cobblestone' && invCobble >= 1)
     {
         invCobble--;
         cobblestoneCnt.textContent = invCobble;
-        this.classList.remove('sky')
-        this.classList.add('cobblestone')
+        updateObjClasslist(this,'sky','cobblestone');
     }
 }
 function resetInventory() {
-    invDirt = 0;
-    dirtCnt.textContent = '00';
-
-    invGrass = 0;
-    grassCnt.textContent = '00';
-
-    invLava = 0;
-    lavaCnt.textContent = '00';
-
-    invWater = 0;
-    waterCnt.textContent = '00';
-
-    invWood = 0;
-    woodCnt.textContent = '00';
-
-    invLeaves = 0;
-    leavesCnt.textContent = '00';
-
-    invCobble = 0;
-    cobblestoneCnt.textContent = '00';
+    invDirt = invGrass= invLava = invWater = invWood = invLeaves = invCobble = 0;
+    dirtCnt.textContent = grassCnt.textContent = lavaCnt.textContent = waterCnt.textContent = woodCnt.textContent = leavesCnt.textContent = cobblestoneCnt.textContent = '00';
 }
-
+function updateObjClasslist(obj,toRemove,toAdd) {
+    obj.classList.remove(toRemove);
+    obj.classList.add(toAdd);
+}
 //event listeners
 clickables.forEach((element) => {
     element.addEventListener('click', () => {
@@ -306,7 +265,6 @@ clickables.forEach((element) => {
         element.classList.add('selected');
         selectedElement = element;
         selectedTool = element.classList[1];
-        console.log(selectedTool);
     })
 })
 gameTiles.forEach((element) => {
@@ -318,7 +276,6 @@ startBtn.addEventListener('click', () => {
         mainMenu.style.visibility = 'hidden';
         gameSizeX = sizeInput.value;
         gameSizeY = 20;
-        console.log('World Size: ', gameSizeX, gameSizeY);
         createWorld(gameSizeX, gameSizeY);
     }
     else {
@@ -328,6 +285,5 @@ startBtn.addEventListener('click', () => {
 resetBtn.addEventListener('click',() => {
     createWorld(gameSizeX, gameSizeY);
     resetInventory();
-
 })
 sizeInput.value = 70;
