@@ -25,29 +25,26 @@ let cobblestoneCnt = document.querySelector('#cobblestoneCnt');
 
 //functions
 function createWorld(x, y) {
+    //create empty world matrix.
     worldMatrix = Array.from(Array(parseInt(y)), () => new Array(parseInt(x)));
 
-    for (let i = 0; i < worldMatrix.length; i++) { //randomize all
-        for (let j = 0; j < worldMatrix[i].length; j++) {
+    //fill the worldMatrix with pre-defined + random layers of game blocks
+    for (let i = 0; i < worldMatrix.length; i++) //randomize all
+        for (let j = 0; j < worldMatrix[i].length; j++)
             worldMatrix[i][j] = availableBlocks[Math.floor(Math.random() * 3)];
-        }
-    }
 
-    for (let i = 0; i < 6; i++) { //add sky
-        for (let j = 0; j < worldMatrix[i].length; j++) {
+    for (let i = 0; i < 6; i++) //add sky
+        for (let j = 0; j < worldMatrix[i].length; j++)
             worldMatrix[i][j] = 'sky';
-        }
-    }
-    for (let i = 12; i < 13; i++) { //add grass
-        for (let j = 0; j < worldMatrix[i].length; j++) {
+            
+    for (let i = 12; i < 13; i++) //add grass
+        for (let j = 0; j < worldMatrix[i].length; j++)
             worldMatrix[i][j] = 'grass';
-        }
-    }
-    for (let i = 13; i < 16; i++) { //add dirt
-        for (let j = 0; j < worldMatrix[i].length; j++) {
+
+    for (let i = 13; i < 16; i++) //add dirt
+        for (let j = 0; j < worldMatrix[i].length; j++)
             worldMatrix[i][j] = 'dirt';
-        }
-    }
+
     for (let i = 12; i < 15; i++) { //add random water
         let end = Math.floor(Math.random() * (gameSizeX - 7));
         let start = 7 + Math.floor(Math.random() * end);
@@ -55,11 +52,10 @@ function createWorld(x, y) {
             worldMatrix[i][j] = 'water';
         }
     }
-    for (let i = 6; i < 12; i++) { //add TREES
-        for (let j = 0; j < worldMatrix[i].length; j++) {
+    for (let i = 6; i < 12; i++) //add TREES
+        for (let j = 0; j < worldMatrix[i].length; j++)
             worldMatrix[i][j] = 'sky';
-        }
-    }
+
     generateTree(2, 11);
     generateTree(6, 11);
     generateTree(gameSizeX - 3, 11);
@@ -75,6 +71,8 @@ function createWorld(x, y) {
             generateCloud2(i, 1);
         }
     }
+
+    //draw world to screen after generating it
     drawWorld();
 }
 function generateTree(x, y) {
